@@ -1,0 +1,56 @@
+SET GLOBAL time_zone = "Asia/Tokyo";
+
+-- Table structure for database(UMAMI)
+
+DROP DATABASE IF EXUSTS UMAMI;
+CREATE DATABASE UMAMI
+    DEFAULT CHARACTER SET utf8mb4
+    DEFAULT COLLATE utf8mb4_unicode_ci;
+SET default_storage_engine = InnoDB;
+
+USE UMAMI;
+
+CREATE TABLE `USER`
+(
+    `ID_USER`        INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `USER_TYPE_CODE` INT          NOT NULL, /* value from enum UserType */
+    `NAME`           VARCHAR(100) NOT NULL,
+    `DISPLAY_NAME`   VARCHAR(100) NOT NULL,
+    `EMAIL`          VARCHAR(256) NOT NULL,
+    `CREATED_AT`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `CREATED_BY`     VARCHAR(20)  NOT NULL,
+    `UPDATED_AT`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `UPDATED_BY`     VARCHAR(20)  NOT NULL,
+    `DELETED_AT`     TIMESTAMP             DEFAULT NULL,
+    `ENABLED`        BOOLEAN      NOT NULL DEFAULT 1
+);
+
+
+-- Table structure for database(UMAMI_AUTH)
+
+DROP DATABASE IF EXISTS UMAMI_AUTH;
+CREATE DATABASE UMAMI_AUTH
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_unicode_ci;
+SET default_storage_engine = InnoDB;
+
+USE UMAMI_AUTH;
+
+CREATE TABLE `UMAMI_AUTH`.`LOGIN_AUTHORITY`
+(
+    `ID_LOGIN_AUTHORITY` INT                              NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `ID_USER`            INT                              NOT NULL,
+    `LOGIN_USER`         VARCHAR(100) COLLATE utf8mb4_bin NOT NULL,
+    `PASSWORD`           VARCHAR(100)                     NOT NULL,
+    `CREATED_AT`         TIMESTAMP                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `CREATED_BY`         VARCHAR(20)                      NOT NULL,
+    `UPDATED_AT`         TIMESTAMP                        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `UPDATED_BY`         VARCHAR(20)                      NOT NULL,
+    `DELETED_AT`         TIMESTAMP                                 DEFAULT NULL,
+    UNIQUE KEY `UK01_LOGIN_AUTHORITY` (`ID_USER`),
+    UNIQUE KEY `UK02_LOGIN_AUTHORITY` (`LOGIN_USER`),
+    FOREIGN KEY `FK01_LOGIN_AUTHORITY` (`ID_USER`) REFERENCES `UMAMI`.`USER` (`ID_USER`)
+);
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON UMAMI.* TO 'admin'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON UMAMI_AUTH.* TO 'admin'@'%';
