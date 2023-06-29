@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Icon from '../icon.png';
+import Icon from '../image/icon-name.png';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -63,9 +63,8 @@ function Login() {
       <div className="max-w-md w-full mx-auto bg-white rounded-lg border border-gray-300 shadow">
         <div className="px-6 py-8">
           <div className="flex justify-center">
-            <img src={Icon} alt="Icon" className="w-32 h-32 mb-4" />
+            <img src={Icon} alt="Icon" className="w-48 h-48 mb-4" />
           </div>
-          <h2 className="text-3xl font-semibold mb-4 text-center">UMAMI</h2>
           {showSignUp ? (
             <form onSubmit={handleSignupSubmit}>
               <div className="mb-6">
